@@ -12,9 +12,13 @@
     </div>
 @endif
 
-@if (session()->has('danger'))
+@if ($errors->any())
 <div class="mb-0 alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('danger') }}
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif

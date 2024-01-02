@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\AuthController;
@@ -17,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AuthController::class, 'auth'])->name('home');
 //dummy
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -36,7 +35,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
         Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [CategoryController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [CategoryController::class, 'delete'])->name('delete');
-        Route::get('/get-data', [CategoryController::class, 'getData'])->name('get-data');
+        Route::get('/data', [CategoryController::class, 'getData'])->name('data');
+    });
+    //route book
+    Route::get('/book', [BookController::class, 'index'])->name('book');
+    Route::prefix('book')->name('book.')->group(function () {
+        Route::get('/create', [BookController::class, 'create'])->name('create');
+        Route::post('/store', [BookController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [BookController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [BookController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [BookController::class, 'delete'])->name('delete');
+        Route::get('/data', [BookController::class, 'getData'])->name('data');
+        Route::get('/show/{id}', [BookController::class, 'show'])->name('show');
+        Route::get('/categories', [BookController::class, 'getCategories'])->name('categories');
+        //export
+        Route::get('/export', [BookController::class, 'export'])->name('export');
     });
 
 });

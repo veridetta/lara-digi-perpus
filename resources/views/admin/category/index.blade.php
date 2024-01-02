@@ -9,68 +9,34 @@
             Tambah Kategori
         </a>
     </div>
-    <table class="table" id="kategoriTable">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Kategori</th>
-                <th>Tindakan</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="table-responsive w-100 col-12">
+        <table id="category-table" class="table table-striped table-bordered w-100">
+            <thead class="">
+                <tr class="">
+                    <th class="bg-danger fw-bold text-white" style="width: 10%;">No</th>
+                    <th style="width: 70%;" class="bg-danger fw-bold text-white">Nama Kategori</th>
+                    <th style="width: 20%;" class="bg-danger fw-bold text-white">Aksi</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        // Inisialisasi DataTable
-        var table = $('#kategoriTable').DataTable({
-            ajax: {
-                url: '{{ route('admin.category.get-data') }}', // Ganti dengan URL sesuai kebutuhan
-                dataSrc: ''
-            },
-            columns: [
-                { data: null },
-                { data: 'nama' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return '<a href="/admin/category/edit/' + row.id + '" class="btn btn-warning btn-sm">Ubah</a>' +
-                            ' <button class="btn btn-danger btn-sm" onclick="hapusKriteria(' + row.id + ')">Hapus</button>';
-                    }
-                }
-            ],
-            columnDefs: [
-                {
-                    targets: 0,
-                    data: null,
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    }
-                }
-            ],
-        });
-
-        // Filter Pencarian
-        $('#kategoriTable').on('keyup', 'tfoot input', function () {
-            table.column($(this).parent().index() + ':visible')
-                .search(this.value)
-                .draw();
-        });
-    });
-
-    // Fungsi untuk menghandle aksi hapus
-    function hapusKriteria(id) {
-        // Implementasikan logika hapus data (misalnya menggunakan konfirmasi)
-        if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
-            // Redirect atau jalankan skrip hapus data
-            window.location.href = '/admin/category/delete/' + id;
-        }
-    }
-</script>
-
-
 @endsection
+
+@push('scripts')
+<script>
+$(function() {
+    $('#category-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{{ route('admin.category.data') }}',
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { data: 'name', name: 'name' },
+            { data: 'action', name: 'action' }
+        ]
+    });
+});
+</script>
+@endpush

@@ -5,14 +5,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
-            <h1 class="">Tambah Kategori</h1>
+            <h1 class="">Ubah Kategori</h1>
         </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.category.update', $category->id) }}">
                         @csrf
-                        @method('PUT')
                         <input type="hidden" name="id" value="{{ $category->id }}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Kategori</label>

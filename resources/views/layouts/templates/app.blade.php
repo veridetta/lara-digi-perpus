@@ -10,10 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css"  />
 </head>
 <body>
-    @include('layouts.templates.navbar')
     <main>
-        @if (session('role') == 'admin')
-            <div class="row w-100 " style="min-height: 70vh;">
+        @auth
+        @if (auth()->user()->role == 'admin')
+            @include('layouts.templates.navbar-auth')
+            <div class="row w-100" style="min-height: 90vh;">
                 <div class="col-md-3 col-lg-3">
                     @include('layouts.templates.sidebar-admin')
                 </div>
@@ -25,8 +26,9 @@
                     @include('layouts.templates.footer')
                 </div>
             </div>
-        @elseif (session('role') == 'user')
-            <div class="row w-100 " style="min-height: 70vh;">
+        @elseif (auth()->user()->role == 'user')
+            @include('layouts.templates.navbar-auth')
+            <div class="row w-100" style="min-height: 90vh;">
                 <div class="col-md-3 col-lg-3">
                     @include('layouts.templates.sidebar')
                 </div>
@@ -39,14 +41,17 @@
                 </div>
             </div>
         @else
-        <div class="row w-100 justify-content-center" style="min-height: 90vh;">
-            <div class="mt-2">
-                @include('layouts.templates.message')
+            @include('layouts.templates.navbar')
+            <div class="row w-100 justify-content-center" style="min-height: 90vh;">
+                <div class="mt-2">
+                    @include('layouts.templates.message')
+                </div>
+                @yield('content')
+                @include('layouts.templates.footer')
             </div>
-            @yield('content')
-            @include('layouts.templates.footer')
-        </div>
         @endif
+    @endauth
+
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

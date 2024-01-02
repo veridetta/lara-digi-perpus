@@ -1,8 +1,8 @@
 
 <nav id="sidebar" style="min-height: 90vh;" class="fixed-top" >
     <div class="sidebar-header">
-        <h3>Admin Panel</h3>
-        <strong>AP</strong>
+        <h3>Sidebar Panel</h3>
+        <strong>SP</strong>
     </div>
 
     <ul class="list-unstyled components">
@@ -13,9 +13,9 @@
             </a>
         </li>
         <li>
-            <a href="?page=admin_kriteria" class="nav-link">
-                <i class="fa fa-database"></i>
-                Data Kriteria
+            <a href="{{route('admin.category')}}" class="nav-link">
+                <i class="fa fa-bars"></i>
+                Kategori
             </a>
         </li>
         <li>
@@ -110,7 +110,3 @@
         display: block;
     }
 </style>
-
-<?php
-}
-?>

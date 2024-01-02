@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\user\BookController as UserBookController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +56,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 Route::prefix('user')->name('user.')->middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/book', [UserBookController::class, 'index'])->name('book');
+    Route::prefix('book')->name('book.')->group(function () {
+        Route::get('/create', [UserBookController::class, 'create'])->name('create');
+        Route::post('/store', [UserBookController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [UserBookController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [UserBookController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [UserBookController::class, 'delete'])->name('delete');
+        Route::get('/data', [UserBookController::class, 'getData'])->name('data');
+        Route::get('/show/{id}', [UserBookController::class, 'show'])->name('show');
+        Route::get('/categories', [UserBookController::class, 'getCategories'])->name('categories');
+        //export
+        Route::get('/export', [UserBookController::class, 'export'])->name('export');
+    });
 });

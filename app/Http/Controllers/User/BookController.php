@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
@@ -14,11 +14,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class BookController extends Controller
 {
     public function index(){
-        return view('admin.book.index');
+        return view('user.book.index');
     }
     public function create(){
         $categories = Category::orderBy('name', 'ASC')->get();
-        return view('admin.book.create', compact('categories'));
+        return view('user.book.create', compact('categories'));
     }
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
@@ -72,7 +72,7 @@ class BookController extends Controller
                     dd('Gagal memindahkan file.');
                 }
             }
-            return redirect()->route('admin.book')->with(['success' => 'Buku: ' . $book->title . ' Ditambahkan']);
+            return redirect()->route('user.book')->with(['success' => 'Buku: ' . $book->title . ' Ditambahkan']);
         } catch (\Exception $e) {
             dd($e->getMessage());
             return redirect()->back()->with(['error' => $e->getMessage()])->withInput();
@@ -81,7 +81,7 @@ class BookController extends Controller
     public function edit($id){
         $book = Book::findOrFail($id);
         $categories = Category::orderBy('name', 'ASC')->get();
-        return view('admin.book.edit', compact('book', 'categories'));
+        return view('user.book.edit', compact('book', 'categories'));
     }
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(), [
@@ -134,7 +134,7 @@ class BookController extends Controller
                     dd('Gagal memindahkan file.');
                 }
             }
-            return redirect()->route('admin.book')->with(['success' => 'Buku: ' . $book->title . ' Diupdate']);
+            return redirect()->route('user.book')->with(['success' => 'Buku: ' . $book->title . ' Diupdate']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()])->withInput();
         }
@@ -142,11 +142,12 @@ class BookController extends Controller
     public function delete($id){
         $book = Book::findOrFail($id);
         $book->delete();
-        return redirect()->route('admin.book')->with(['success' => 'Buku: ' . $book->title . ' Dihapus']);
+        return redirect()->route('user.book')->with(['success' => 'Buku: ' . $book->title . ' Dihapus']);
     }
     public function getData(Request $request)
     {
-        $query = Book::orderBy('created_at', 'DESC');
+        //where user_id = auth()->user()->id
+        $query = Book::with(['category', 'user'])->where('user_id', Auth::user()->id);
 
         // Filter berdasarkan kategori jika terdapat input kategori
         if ($request->category_id != '') {
@@ -169,9 +170,9 @@ class BookController extends Controller
                 'amount' => $book->amount,
                 'cover' => $book->cover,
                 'pdf' => $book->pdf,
-                'view_url' => route('admin.book.show', $book->id),
-                'edit_url' => route('admin.book.edit', $book->id),
-                'delete_url' => route('admin.book.delete', $book->id),
+                'view_url' => route('user.book.show', $book->id),
+                'edit_url' => route('user.book.edit', $book->id),
+                'delete_url' => route('user.book.delete', $book->id),
             ];
         }
 
@@ -183,7 +184,7 @@ class BookController extends Controller
     }
     public function show($id){
         $book = Book::findOrFail($id);
-        return view('admin.book.show', compact('book'));
+        return view('user.book.show', compact('book'));
     }
     public function export(){
         $nama = 'books_' . date('Y-m-d_H-i-s') . '.xlsx';

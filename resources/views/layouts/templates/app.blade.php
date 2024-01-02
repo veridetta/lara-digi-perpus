@@ -25,31 +25,32 @@
                     @include('layouts.templates.footer')
                 </div>
             </div>
-        @elseif (auth()->user()->role == 'user')
-            @include('layouts.templates.navbar-auth')
-            <div class="row w-100" style="min-height: 90vh;">
-                <div class="col-md-3 col-lg-3">
-                    @include('layouts.templates.sidebar')
-                </div>
-                <div class="col-md-9 col-lg-9 row justify-content-center">
-                    <div class="mt-2">
-                        @include('layouts.templates.message')
+            @elseif (auth()->user()->role == 'user')
+                @include('layouts.templates.navbar-auth')
+                <div class="row w-100" style="min-height: 90vh;">
+                    <div class="col-md-3 col-lg-3">
+                        @include('layouts.templates.sidebar')
                     </div>
-                    @yield('content')
-                    @include('layouts.templates.footer')
+                    <div class="col-md-9 col-lg-9 row justify-content-center">
+                        <div class="mt-2">
+                            @include('layouts.templates.message')
+                        </div>
+                        @yield('content')
+                        @include('layouts.templates.footer')
+                    </div>
                 </div>
+            @endif
+        @endauth
+        @guest
+        @include('layouts.templates.navbar')
+        <div class="row w-100 justify-content-center" style="min-height: 90vh;">
+            <div class="mt-2">
+                @include('layouts.templates.message')
             </div>
-        @else
-            @include('layouts.templates.navbar')
-            <div class="row w-100 justify-content-center" style="min-height: 90vh;">
-                <div class="mt-2">
-                    @include('layouts.templates.message')
-                </div>
-                @yield('content')
-                @include('layouts.templates.footer')
-            </div>
-        @endif
-    @endauth
+            @yield('content')
+            @include('layouts.templates.footer')
+        </div>
+        @endguest
 
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

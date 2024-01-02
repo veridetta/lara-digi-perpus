@@ -5,11 +5,8 @@
 <div class="col-12 p-4 mt-4">
     <h2>List Buku</h2>
     <div class="mb-3">
-        <a href="{{ route('admin.book.create') }}" class="btn btn-info">
+        <a href="{{ route('user.book.create') }}" class="btn btn-info">
             Tambah Buku
-        </a>
-        <a href="{{ route('admin.book.export') }}" class="btn btn-success">
-            Export
         </a>
     </div>
 
@@ -37,7 +34,7 @@
 $(function() {
     // Mendapatkan daftar kategori
     $.ajax({
-        url: '{{ route('admin.book.categories') }}',
+        url: '{{ route('user.book.categories') }}',
         method: 'GET',
         success: function(categories) {
             // Menambahkan opsi kategori ke elemen select
@@ -53,7 +50,7 @@ $(function() {
     // Fungsi untuk memuat daftar buku
     function loadBooks() {
         $.ajax({
-            url: '{{ route('admin.book.data') }}',
+            url: '{{ route('user.book.data') }}',
             method: 'GET',
             data: {
                 search: $('#searchInput').val(),

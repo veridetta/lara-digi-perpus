@@ -46,4 +46,13 @@ class User extends Authenticatable
     {
         return in_array($this->role, $roles);
     }
+    public function hasRole($role)
+    {
+        return $this->role == $role;
+    }
+    //relationship book
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
